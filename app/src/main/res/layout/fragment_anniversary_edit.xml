@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF5F5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <TextView
+                android:id="@+id/tv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="← 返回"
+                android:textSize="16sp"
+                android:textColor="#FF6B81"
+                android:padding="8dp"
+                android:clickable="true" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="编辑纪念日"
+                android:textSize="20sp"
+                android:textColor="#333333"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tv_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="保存"
+                android:textSize="16sp"
+                android:textColor="#FF6B81"
+                android:textStyle="bold"
+                android:padding="8dp"
+                android:clickable="true" />
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="名称"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="日期（点击选择）"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:clickable="true"
+            android:focusable="false">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:clickable="true"
+                android:cursorVisible="false" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="类型"
+            android:textSize="14sp"
+            android:textColor="#666666" />
+        <LinearLayout
+            android:id="@+id/type_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_valentine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="💝 情人节"
+                    style="@style/Widget.Material3.Chip.Filter" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_520"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="💕 520"
+                    style="@style/Widget.Material3.Chip.Filter" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_qixi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="💗 七夕"
+                    style="@style/Widget.Material3.Chip.Filter" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_birthday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🎂 生日"
+                    style="@style/Widget.Material3.Chip.Filter" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_anniversary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="💍 纪念日"
+                    style="@style/Widget.Material3.Chip.Filter" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_custom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="✨ 自定义"
+                    style="@style/Widget.Material3.Chip.Filter" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="重复"
+            android:textSize="14sp"
+            android:textColor="#666666" />
+        <RadioGroup
+            android:id="@+id/rg_repeat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/rb_yearly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="每年"
+                android:checked="true" />
+            <RadioButton
+                android:id="@+id/rb_once"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="仅此一次" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="提前提醒"
+            android:textSize="14sp"
+            android:textColor="#666666" />
+        <RadioGroup
+            android:id="@+id/rg_remind"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/rb_day0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="当天" />
+            <RadioButton
+                android:id="@+id/rb_day3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="提前3天"
+                android:checked="true" />
+            <RadioButton
+                android:id="@+id/rb_day7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="提前7天" />
+        </RadioGroup>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="备注"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="删除纪念日"
+            android:textColor="#FF4444"
+            android:backgroundTint="#FFFFFF"
+            android:visibility="gone"
+            style="@style/Widget.Material3.Button.OutlinedButton" />
+
+    </LinearLayout>
+</ScrollView>

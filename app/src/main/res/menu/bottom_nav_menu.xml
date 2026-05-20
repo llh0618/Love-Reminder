@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="首页" />
+    <item
+        android:id="@+id/nav_likes"
+        android:icon="@drawable/ic_like"
+        android:title="喜欢" />
+    <item
+        android:id="@+id/nav_dislikes"
+        android:icon="@drawable/ic_dislike"
+        android:title="讨厌" />
+    <item
+        android:id="@+id/nav_gifts"
+        android:icon="@drawable/ic_gift"
+        android:title="礼物" />
+</menu>

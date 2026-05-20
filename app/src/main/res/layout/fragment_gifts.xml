@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFF5F5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="🎁 礼物清单"
+            android:textSize="22sp"
+            android:textColor="#E8556D"
+            android:textStyle="bold" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="添加礼物"
+            android:src="@drawable/ic_add"
+            app:backgroundTint="#FF6B81"
+            app:fabSize="mini" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/filter_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="全部"
+            android:checked="true"
+            style="@style/Widget.Material3.Chip.Filter" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_want"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="想买"
+            style="@style/Widget.Material3.Chip.Filter" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_bought"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已买"
+            style="@style/Widget.Material3.Chip.Filter" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_given"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已送"
+            style="@style/Widget.Material3.Chip.Filter" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_gifts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp" />
+</LinearLayout>
