@@ -126,6 +126,17 @@
                     android:text="💍 纪念日"
                     style="@style/Widget.Material3.Chip.Filter" />
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_relationship"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="💑 确定关系"
+                    style="@style/Widget.Material3.Chip.Filter" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.google.android.material.chip.Chip
                     android:id="@+id/chip_custom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -134,60 +145,122 @@
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
+        <!-- 确定关系类型：里程碑天数编辑器 -->
+        <LinearLayout
+            android:id="@+id/layout_milestones"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="重复"
-            android:textSize="14sp"
-            android:textColor="#666666" />
-        <RadioGroup
-            android:id="@+id/rg_repeat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <RadioButton
-                android:id="@+id/rb_yearly"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="每年"
-                android:checked="true" />
-            <RadioButton
-                android:id="@+id/rb_once"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="仅此一次" />
-        </RadioGroup>
+            android:orientation="vertical"
+            android:visibility="gone">
 
-        <TextView
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="里程碑天数"
+                android:textSize="14sp"
+                android:textColor="#666666" />
+
+            <LinearLayout
+                android:id="@+id/milestone_chips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical">
+                <EditText
+                    android:id="@+id/et_new_day"
+                    android:layout_width="100dp"
+                    android:layout_height="48dp"
+                    android:hint="天数"
+                    android:inputType="number"
+                    android:textSize="14sp" />
+                <Button
+                    android:id="@+id/btn_add_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:text="添加"
+                    android:textSize="13sp"
+                    android:layout_marginStart="8dp"
+                    style="@style/Widget.Material3.Button.TextButton" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_repeat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="提前提醒"
-            android:textSize="14sp"
-            android:textColor="#666666" />
-        <RadioGroup
-            android:id="@+id/rg_remind"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_repeat_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="重复"
+                android:textSize="14sp"
+                android:textColor="#666666" />
+            <RadioGroup
+                android:id="@+id/rg_repeat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/rb_yearly"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="每年"
+                    android:checked="true" />
+                <RadioButton
+                    android:id="@+id/rb_once"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="仅此一次" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_remind"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <RadioButton
-                android:id="@+id/rb_day0"
-                android:layout_width="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="当天" />
-            <RadioButton
-                android:id="@+id/rb_day3"
-                android:layout_width="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="提前提醒"
+                android:textSize="14sp"
+                android:textColor="#666666" />
+            <RadioGroup
+                android:id="@+id/rg_remind"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="提前3天"
-                android:checked="true" />
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/rb_day0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="当天" />
+                <RadioButton
+                    android:id="@+id/rb_day3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="提前3天"
+                    android:checked="true" />
             <RadioButton
                 android:id="@+id/rb_day7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="提前7天" />
         </RadioGroup>
+        </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"

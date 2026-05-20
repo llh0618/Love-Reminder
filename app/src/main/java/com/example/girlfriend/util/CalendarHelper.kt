@@ -54,35 +54,79 @@ object CalendarHelper {
      * 返回所有 eventId 的列表
      */
     fun insertEvents(context: Context, anniversary: Anniversary, calendarId: Long): List<Long> {
-        val dateParts = anniversary.date.split("-").map { it.toInt() }
-        val emoji = getTypeEmoji(anniversary.type)
-        val rrule = if (anniversary.repeat == "yearly") "FREQ=YEARLY" else null
         val eventIds = mutableListOf<Long>()
-        val days = anniversary.remindBeforeDays
+        val emoji = getTypeEmoji(anniversary.type)
 
-        // 当天事件始终创建
-        eventIds.add(
-            insertOneEvent(context, calendarId, anniversary, dateParts, 0,
-                "$emoji ${anniversary.name}", rrule)
-        )
+        if (anniversary.type == "relationship" && anniversary.relationshipDays.isNotBlank()) {
+            // 确定关系纪念日：每年事件 + 各里程碑一次性事件
+            val dateParts = anniversary.date.split("-").map { it.toInt() }
+            val yearlyRrule = "FREQ=YEARLY"
 
-        // 提前 3 天
-        if (days >= 3) {
-            eventIds.add(
-                insertOneEvent(context, calendarId, anniversary, dateParts, -3,
-                    "🔔 ${anniversary.name} · 还有3天", rrule)
+            // 每年纪念日（当天 + 提前提醒）
+            eventIds.addAll(
+                createEventSet(context, calendarId, anniversary, dateParts, emoji, yearlyRrule)
             )
-        }
 
-        // 提前 7 天
-        if (days >= 7) {
-            eventIds.add(
-                insertOneEvent(context, calendarId, anniversary, dateParts, -7,
-                    "🔔 ${anniversary.name} · 还有7天", rrule)
+            // 各里程碑一次性事件（共用相同的提前提醒配置）
+            val days = anniversary.relationshipDays.split(",").map { it.trim().toIntOrNull() }.filterNotNull()
+            for (day in days) {
+                val milestoneTitle = "$emoji ${anniversary.name} · ${day}天"
+                val milestoneDate = addDays(dateParts, day)
+                eventIds.addAll(
+                    createEventSet(context, calendarId, anniversary, milestoneDate, emoji, null, milestoneTitle)
+                )
+            }
+        } else {
+            // 普通纪念日
+            val dateParts = anniversary.date.split("-").map { it.toInt() }
+            val rrule = if (anniversary.repeat == "yearly") "FREQ=YEARLY" else null
+            eventIds.addAll(
+                createEventSet(context, calendarId, anniversary, dateParts, emoji, rrule)
             )
         }
 
         return eventIds.filter { it > 0 }
+    }
+
+    private fun createEventSet(
+        context: Context, calendarId: Long, anniversary: Anniversary,
+        dateParts: List<Int>, emoji: String, rrule: String?,
+        customTitle: String? = null
+    ): List<Long> {
+        val eventIds = mutableListOf<Long>()
+        val days = anniversary.remindBeforeDays
+        val baseTitle = customTitle ?: "$emoji ${anniversary.name}"
+
+        eventIds.add(
+            insertOneEvent(context, calendarId, anniversary, dateParts, 0,
+                baseTitle, rrule)
+        )
+
+        if (days >= 3) {
+            eventIds.add(
+                insertOneEvent(context, calendarId, anniversary, dateParts, -3,
+                    "🔔 $baseTitle · 还有3天", rrule)
+            )
+        }
+
+        if (days >= 7) {
+            eventIds.add(
+                insertOneEvent(context, calendarId, anniversary, dateParts, -7,
+                    "🔔 $baseTitle · 还有7天", rrule)
+            )
+        }
+
+        return eventIds
+    }
+
+    private fun addDays(dateParts: List<Int>, days: Int): List<Int> {
+        val cal = Calendar.getInstance().apply {
+            set(Calendar.YEAR, dateParts[0])
+            set(Calendar.MONTH, dateParts[1] - 1)
+            set(Calendar.DAY_OF_MONTH, dateParts[2])
+            add(Calendar.DAY_OF_MONTH, days)
+        }
+        return listOf(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH))
     }
 
     private fun insertOneEvent(
@@ -149,6 +193,7 @@ object CalendarHelper {
         "qixi" -> "💗"
         "birthday" -> "🎂"
         "anniversary" -> "💍"
+        "relationship" -> "💑"
         else -> "💖"
     }
 
@@ -170,6 +215,7 @@ object CalendarHelper {
         "qixi" -> "七夕"
         "birthday" -> "生日"
         "anniversary" -> "纪念日"
+        "relationship" -> "确定关系"
         else -> "自定义"
     }
 }

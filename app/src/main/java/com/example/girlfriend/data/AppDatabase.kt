@@ -10,7 +10,7 @@ import com.example.girlfriend.data.entity.Note
 
 @Database(
     entities = [Anniversary::class, Note::class, Gift::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

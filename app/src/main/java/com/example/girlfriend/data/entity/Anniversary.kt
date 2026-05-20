@@ -13,5 +13,6 @@ data class Anniversary(
     val repeat: String,         // yearly/once
     val remindBeforeDays: Int = 0,
     val note: String = "",
-    val calendarEventIds: String = ""  // 逗号分隔的多个日历事件ID
+    val calendarEventIds: String = "",  // 逗号分隔的多个日历事件ID
+    val relationshipDays: String = ""   // 确定关系类型的天数配置，如"30,99,180"，逗号分隔，非关系类型为空
 )

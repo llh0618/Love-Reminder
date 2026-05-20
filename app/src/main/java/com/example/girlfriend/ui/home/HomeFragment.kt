@@ -63,6 +63,7 @@ class HomeFragment : Fragment() {
                     putInt("remindBeforeDays", anniversary.remindBeforeDays)
                     putString("note", anniversary.note)
                     putString("calendarEventIds", anniversary.calendarEventIds)
+                    putString("relationshipDays", anniversary.relationshipDays)
                 }
             }
         }
@@ -70,6 +71,28 @@ class HomeFragment : Fragment() {
     }
 
     companion object {
+        fun findNextMilestone(baseDate: String, milestoneDays: List<Int>): Pair<Int, String>? {
+            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val base = sdf.parse(baseDate) ?: return null
+            val today = Calendar.getInstance().apply {
+                set(Calendar.HOUR_OF_DAY, 0); set(Calendar.MINUTE, 0); set(Calendar.SECOND, 0)
+            }
+            val milestones = milestoneDays.map { days ->
+                val cal = Calendar.getInstance().apply {
+                    time = base
+                    add(Calendar.DAY_OF_MONTH, days)
+                    set(Calendar.HOUR_OF_DAY, 0); set(Calendar.MINUTE, 0); set(Calendar.SECOND, 0)
+                }
+                days to "${cal.get(Calendar.YEAR)}-${String.format("%02d", cal.get(Calendar.MONTH)+1)}-${String.format("%02d", cal.get(Calendar.DAY_OF_MONTH))}"
+            }.filter { (_, dateStr) ->
+                val date = sdf.parse(dateStr)
+                date != null && date.time >= today.timeInMillis
+            }.sortedBy { (_, dateStr) ->
+                sdf.parse(dateStr)?.time ?: Long.MAX_VALUE
+            }
+            return milestones.firstOrNull()
+        }
+
         fun daysUntil(dateStr: String): Int {
             val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val target = sdf.parse(dateStr) ?: return Int.MAX_VALUE
@@ -78,11 +101,9 @@ class HomeFragment : Fragment() {
             }
             val targetCal = Calendar.getInstance().apply {
                 time = target
-                // 如果是每年重复，把年份设为今年
                 set(Calendar.YEAR, today.get(Calendar.YEAR))
                 set(Calendar.HOUR_OF_DAY, 0); set(Calendar.MINUTE, 0); set(Calendar.SECOND, 0)
             }
-            // 如果今年的日期已过，算明年的
             if (targetCal.before(today)) {
                 targetCal.add(Calendar.YEAR, 1)
             }
@@ -119,16 +140,56 @@ class AnniversaryAdapter : RecyclerView.Adapter<AnniversaryAdapter.VH>() {
         private val tvDate = view.findViewById<TextView>(R.id.tv_date)
         private val tvCountdown = view.findViewById<TextView>(R.id.tv_countdown)
         private val tvLabel = view.findViewById<TextView>(R.id.tv_countdown_label)
+        private val tvMilestones = view.findViewById<TextView>(R.id.tv_milestones)
 
         fun bind(a: Anniversary) {
             val emoji = when (a.type) {
                 "valentine" -> "💝"; "520" -> "💕"; "qixi" -> "💗"
-                "birthday" -> "🎂"; "anniversary" -> "💍"; else -> "💖"
+                "birthday" -> "🎂"; "anniversary" -> "💍"
+                "relationship" -> "💑"; else -> "💖"
             }
+
+            if (a.type == "relationship" && a.relationshipDays.isNotBlank()) {
+                bindRelationship(a, emoji)
+            } else {
+                bindNormal(a, emoji)
+            }
+
+            itemView.setOnClickListener { onItemClick?.invoke(a) }
+        }
+
+        private fun bindNormal(a: Anniversary, emoji: String) {
             tvName.text = "$emoji  ${a.name}"
             tvDate.text = a.date
+            tvMilestones.visibility = View.GONE
 
             val days = HomeFragment.daysUntil(a.date)
+            updateCountdown(days)
+        }
+
+        private fun bindRelationship(a: Anniversary, emoji: String) {
+            tvName.text = "$emoji  ${a.name}"
+            tvDate.text = "始于 ${a.date}"
+
+            // 最近的下一个里程碑
+            val milestones = a.relationshipDays.split(",")
+                .mapNotNull { it.trim().toIntOrNull() }
+            val nextMilestone = HomeFragment.findNextMilestone(a.date, milestones)
+
+            if (nextMilestone != null) {
+                val days = HomeFragment.daysUntil(nextMilestone.second)
+                updateCountdown(days)
+                tvMilestones.visibility = View.VISIBLE
+                tvMilestones.text = "⏳ ${nextMilestone.first}天纪念日 · ${nextMilestone.second}"
+            } else {
+                // 没有未到来的里程碑，显示每年纪念日
+                val days = HomeFragment.daysUntil(a.date)
+                updateCountdown(days)
+                tvMilestones.visibility = View.GONE
+            }
+        }
+
+        private fun updateCountdown(days: Int) {
             when {
                 days == 0 -> {
                     tvCountdown.text = "今天"
@@ -144,8 +205,6 @@ class AnniversaryAdapter : RecyclerView.Adapter<AnniversaryAdapter.VH>() {
                     tvLabel.text = ""
                 }
             }
-
-            itemView.setOnClickListener { onItemClick?.invoke(a) }
         }
     }
 }

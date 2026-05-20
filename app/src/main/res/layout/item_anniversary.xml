@@ -58,5 +58,15 @@
             android:textColor="#999999"
             android:gravity="center" />
 
+        <TextView
+            android:id="@+id/tv_milestones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="12sp"
+            android:textColor="#FF6B81"
+            android:gravity="center"
+            android:visibility="gone" />
+
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
