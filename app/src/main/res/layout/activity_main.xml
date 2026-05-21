@@ -16,8 +16,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:background="?attr/colorSurface"
         app:menu="@menu/bottom_nav_menu"
         app:labelVisibilityMode="labeled"
-        app:itemActiveIndicatorStyle="@color/pink_light" />
+        app:elevation="0dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

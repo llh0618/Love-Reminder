@@ -198,8 +198,8 @@ class AnniversaryEditFragment : Fragment() {
             val chip = Chip(requireContext()).apply {
                 text = "${day}天"
                 isCloseIconVisible = true
-                chipBackgroundColor = ColorStateList.valueOf(0xFFFFF0F3.toInt())
-                setTextColor(0xFFE8556D.toInt())
+                chipBackgroundColor = ColorStateList.valueOf(0xF0D5C8.toInt())
+                setTextColor(0x8C6B70.toInt())
                 setOnCloseIconClickListener {
                     milestoneDays.remove(day)
                     refreshMilestoneChips(container)

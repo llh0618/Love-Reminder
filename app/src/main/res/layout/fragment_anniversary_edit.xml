@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFF5F5">
+    android:background="?android:colorBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,6 +11,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Toolbar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,8 +22,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="← 返回"
-                android:textSize="16sp"
-                android:textColor="#FF6B81"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:textColor="?attr/colorPrimary"
                 android:padding="8dp"
                 android:clickable="true" />
             <TextView
@@ -29,25 +31,25 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="编辑纪念日"
-                android:textSize="20sp"
-                android:textColor="#333333"
-                android:textStyle="bold" />
+                android:textAppearance="?attr/textAppearanceTitleLarge"
+                android:textColor="?attr/colorOnBackground" />
             <TextView
                 android:id="@+id/tv_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="保存"
-                android:textSize="16sp"
-                android:textColor="#FF6B81"
-                android:textStyle="bold"
-                android:padding="8dp"
+                android:textAppearance="?attr/textAppearanceLabelLarge"
+                android:textColor="?attr/colorPrimary"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="8dp"
                 android:clickable="true" />
         </LinearLayout>
 
+        <!-- Form fields -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:hint="名称"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
             <com.google.android.material.textfield.TextInputEditText
@@ -73,13 +75,14 @@
                 android:cursorVisible="false" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Type chips -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:text="类型"
-            android:textSize="14sp"
-            android:textColor="#666666" />
+            android:textAppearance="?attr/textAppearanceLabelLarge"
+            android:textColor="?attr/colorOnSurfaceVariant" />
         <LinearLayout
             android:id="@+id/type_group"
             android:layout_width="match_parent"
@@ -94,19 +97,19 @@
                     android:id="@+id/chip_valentine"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="💝 情人节"
+                    android:text="情人节"
                     style="@style/Widget.Material3.Chip.Filter" />
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_520"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="💕 520"
+                    android:text="520"
                     style="@style/Widget.Material3.Chip.Filter" />
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_qixi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="💗 七夕"
+                    android:text="七夕"
                     style="@style/Widget.Material3.Chip.Filter" />
             </LinearLayout>
             <LinearLayout
@@ -117,19 +120,19 @@
                     android:id="@+id/chip_birthday"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🎂 生日"
+                    android:text="生日"
                     style="@style/Widget.Material3.Chip.Filter" />
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_anniversary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="💍 纪念日"
+                    android:text="纪念日"
                     style="@style/Widget.Material3.Chip.Filter" />
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_relationship"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="💑 确定关系"
+                    android:text="确定关系"
                     style="@style/Widget.Material3.Chip.Filter" />
             </LinearLayout>
             <LinearLayout
@@ -140,17 +143,17 @@
                     android:id="@+id/chip_custom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="✨ 自定义"
+                    android:text="自定义"
                     style="@style/Widget.Material3.Chip.Filter" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- 确定关系类型：里程碑天数编辑器 -->
+        <!-- Milestones editor -->
         <LinearLayout
             android:id="@+id/layout_milestones"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:orientation="vertical"
             android:visibility="gone">
 
@@ -158,8 +161,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="里程碑天数"
-                android:textSize="14sp"
-                android:textColor="#666666" />
+                android:textAppearance="?attr/textAppearanceLabelLarge"
+                android:textColor="?attr/colorOnSurfaceVariant" />
 
             <LinearLayout
                 android:id="@+id/milestone_chips"
@@ -174,24 +177,28 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="8dp"
                 android:gravity="center_vertical">
-                <EditText
-                    android:id="@+id/et_new_day"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="100dp"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
                     android:hint="天数"
-                    android:inputType="number"
-                    android:textSize="14sp" />
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_new_day"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
                 <Button
                     android:id="@+id/btn_add_day"
                     android:layout_width="wrap_content"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
                     android:text="添加"
-                    android:textSize="13sp"
                     android:layout_marginStart="8dp"
                     style="@style/Widget.Material3.Button.TextButton" />
             </LinearLayout>
         </LinearLayout>
 
+        <!-- Repeat -->
         <LinearLayout
             android:id="@+id/layout_repeat"
             android:layout_width="match_parent"
@@ -202,10 +209,10 @@
                 android:id="@+id/tv_repeat_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="20dp"
                 android:text="重复"
-                android:textSize="14sp"
-                android:textColor="#666666" />
+                android:textAppearance="?attr/textAppearanceLabelLarge"
+                android:textColor="?attr/colorOnSurfaceVariant" />
             <RadioGroup
                 android:id="@+id/rg_repeat"
                 android:layout_width="match_parent"
@@ -225,6 +232,7 @@
             </RadioGroup>
         </LinearLayout>
 
+        <!-- Remind -->
         <LinearLayout
             android:id="@+id/layout_remind"
             android:layout_width="match_parent"
@@ -234,10 +242,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="20dp"
                 android:text="提前提醒"
-                android:textSize="14sp"
-                android:textColor="#666666" />
+                android:textAppearance="?attr/textAppearanceLabelLarge"
+                android:textColor="?attr/colorOnSurfaceVariant" />
             <RadioGroup
                 android:id="@+id/rg_remind"
                 android:layout_width="match_parent"
@@ -254,14 +262,15 @@
                     android:layout_height="wrap_content"
                     android:text="提前3天"
                     android:checked="true" />
-            <RadioButton
-                android:id="@+id/rb_day7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="提前7天" />
-        </RadioGroup>
+                <RadioButton
+                    android:id="@+id/rb_day7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="提前7天" />
+            </RadioGroup>
         </LinearLayout>
 
+        <!-- Note -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -274,16 +283,15 @@
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Delete -->
         <Button
             android:id="@+id/btn_delete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="删除纪念日"
-            android:textColor="#FF4444"
-            android:backgroundTint="#FFFFFF"
+            android:textColor="?attr/colorError"
             android:visibility="gone"
             style="@style/Widget.Material3.Button.OutlinedButton" />
-
     </LinearLayout>
 </ScrollView>

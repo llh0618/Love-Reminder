@@ -32,7 +32,7 @@ object CalendarHelper {
             put(CalendarContract.Calendars.ACCOUNT_NAME, ACCOUNT_NAME)
             put(CalendarContract.Calendars.ACCOUNT_TYPE, CalendarContract.ACCOUNT_TYPE_LOCAL)
             put(CalendarContract.Calendars.CALENDAR_DISPLAY_NAME, CALENDAR_NAME)
-            put(CalendarContract.Calendars.CALENDAR_COLOR, 0xFF6B81.toInt())
+            put(CalendarContract.Calendars.CALENDAR_COLOR, 0xD99DA3.toInt())
             put(CalendarContract.Calendars.VISIBLE, 1)
             put(CalendarContract.Calendars.SYNC_EVENTS, 1)
             put(CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL, CalendarContract.Calendars.CAL_ACCESS_OWNER)

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,7 +14,8 @@ import com.example.girlfriend.MainActivity
 import com.example.girlfriend.R
 import com.example.girlfriend.data.entity.Gift
 import com.example.girlfriend.util.MarkdownExporter
-import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class GiftsFragment : Fragment() {
 
@@ -29,6 +31,17 @@ class GiftsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this)[GiftViewModel::class.java]
+
+        // Apply quarternary accent to gifts page
+        val accent = ContextCompat.getColor(requireContext(), R.color.quarternary)
+        val accentContainer = ContextCompat.getColor(requireContext(), R.color.quarternary_container)
+        val accentOnContainer = ContextCompat.getColor(requireContext(), R.color.on_quarternary_container)
+
+        view.findViewById<FloatingActionButton>(R.id.fab_add).apply {
+            backgroundTintList = android.content.res.ColorStateList.valueOf(accentContainer)
+            imageTintList = android.content.res.ColorStateList.valueOf(accentOnContainer)
+        }
+        view.findViewById<TextView>(R.id.btn_export_gifts).setTextColor(accent)
 
         val recycler = view.findViewById<RecyclerView>(R.id.recycler_gifts)
         recycler.layoutManager = LinearLayoutManager(requireContext())
@@ -52,19 +65,17 @@ class GiftsFragment : Fragment() {
 
         adapter.onItemClick = { gift -> openEditFragment(gift) }
 
-        // 状态筛选
-        val filterChips = mapOf(
+        // 状态筛选 — ChipGroup 单选自动互斥
+        val filterMap = mapOf(
             R.id.chip_all to "all",
             R.id.chip_want to "want",
             R.id.chip_bought to "bought"
         )
-        filterChips.forEach { (id, status) ->
-            view.findViewById<Chip>(id).setOnClickListener {
-                currentFilter = status
-                // 刷新筛选
-                viewModel.allGifts.value?.let { gifts ->
-                    adapter.submitList(if (status == "all") gifts else gifts.filter { it.status == status })
-                }
+        view.findViewById<ChipGroup>(R.id.filter_group).setOnCheckedStateChangeListener { group, _ ->
+            val checkedId = group.checkedChipId
+            currentFilter = filterMap[checkedId] ?: "all"
+            viewModel.allGifts.value?.let { gifts ->
+                adapter.submitList(if (currentFilter == "all") gifts else gifts.filter { it.status == currentFilter })
             }
         }
     }
@@ -114,17 +125,24 @@ class GiftAdapter : RecyclerView.Adapter<GiftAdapter.VH>() {
 
         fun bind(g: Gift) {
             tvName.text = g.name
-            tvNote.text = if (g.note.isNotBlank()) g.note else if (g.link.isNotBlank()) "🔗 $g.link" else ""
+            tvNote.text = if (g.note.isNotBlank()) g.note else if (g.link.isNotBlank()) g.link else ""
             tvStatus.text = when (g.status) {
                 "want" -> "想送"
                 "bought" -> "已送"
                 else -> ""
             }
-            tvStatus.setTextColor(when (g.status) {
-                "want" -> 0xFFFF9800.toInt()
-                "bought" -> 0xFF4CAF50.toInt()
-                else -> 0xFF999999.toInt()
-            })
+            val statusColor = when (g.status) {
+                "want" -> R.color.quarternary_container
+                "bought" -> R.color.secondary_container
+                else -> R.color.surface_variant
+            }
+            val statusTextColor = when (g.status) {
+                "want" -> R.color.on_quarternary_container
+                "bought" -> R.color.on_secondary_container
+                else -> R.color.on_surface_variant
+            }
+            tvStatus.background.setTint(ContextCompat.getColor(itemView.context, statusColor))
+            tvStatus.setTextColor(ContextCompat.getColor(itemView.context, statusTextColor))
 
             itemView.setOnClickListener { onItemClick?.invoke(g) }
         }

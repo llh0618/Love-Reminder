@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,11 +14,15 @@ import com.example.girlfriend.MainActivity
 import com.example.girlfriend.R
 import com.example.girlfriend.data.entity.Note
 import com.example.girlfriend.util.MarkdownExporter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 abstract class NoteListFragment : Fragment() {
 
     abstract val category: String
     abstract val title: String
+    abstract val accentColorResId: Int
+    abstract val accentContainerColorResId: Int
+    abstract val accentOnContainerColorResId: Int
 
     private val adapter = NoteAdapter()
 
@@ -30,6 +35,17 @@ abstract class NoteListFragment : Fragment() {
         val vm = ViewModelProvider(this)[NoteViewModel::class.java]
 
         view.findViewById<TextView>(R.id.tv_title).text = title
+
+        // Apply accent color for this page
+        val accent = ContextCompat.getColor(requireContext(), accentColorResId)
+        val accentContainer = ContextCompat.getColor(requireContext(), accentContainerColorResId)
+        val accentOnContainer = ContextCompat.getColor(requireContext(), accentOnContainerColorResId)
+
+        view.findViewById<FloatingActionButton>(R.id.fab_add).apply {
+            backgroundTintList = android.content.res.ColorStateList.valueOf(accentContainer)
+            imageTintList = android.content.res.ColorStateList.valueOf(accentOnContainer)
+        }
+        view.findViewById<TextView>(R.id.btn_export).setTextColor(accent)
 
         val recycler = view.findViewById<RecyclerView>(R.id.recycler_notes)
         recycler.layoutManager = LinearLayoutManager(requireContext())
@@ -93,7 +109,7 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.VH>() {
 
         fun bind(n: Note) {
             tvContent.text = n.content
-            tvTags.text = if (n.tags.isNotBlank()) "🏷 ${n.tags}" else ""
+            tvTags.text = if (n.tags.isNotBlank()) n.tags else ""
             itemView.setOnClickListener { onItemClick?.invoke(n) }
         }
     }

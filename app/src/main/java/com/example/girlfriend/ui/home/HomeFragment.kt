@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -141,35 +142,32 @@ class AnniversaryAdapter : RecyclerView.Adapter<AnniversaryAdapter.VH>() {
         private val tvCountdown = view.findViewById<TextView>(R.id.tv_countdown)
         private val tvLabel = view.findViewById<TextView>(R.id.tv_countdown_label)
         private val tvMilestones = view.findViewById<TextView>(R.id.tv_milestones)
+        private val ivIcon = view.findViewById<ImageView>(R.id.iv_icon)
 
         fun bind(a: Anniversary) {
-            val emoji = when (a.type) {
-                "valentine" -> "💝"; "520" -> "💕"; "qixi" -> "💗"
-                "birthday" -> "🎂"; "anniversary" -> "💍"
-                "relationship" -> "💑"; else -> "💖"
-            }
-
             if (a.type == "relationship" && a.relationshipDays.isNotBlank()) {
-                bindRelationship(a, emoji)
+                bindRelationship(a)
             } else {
-                bindNormal(a, emoji)
+                bindNormal(a)
             }
 
             itemView.setOnClickListener { onItemClick?.invoke(a) }
         }
 
-        private fun bindNormal(a: Anniversary, emoji: String) {
-            tvName.text = "$emoji  ${a.name}"
+        private fun bindNormal(a: Anniversary) {
+            tvName.text = a.name
             tvDate.text = a.date
             tvMilestones.visibility = View.GONE
+            ivIcon.setImageResource(R.drawable.ic_heart)
 
             val days = HomeFragment.daysUntil(a.date)
             updateCountdown(days)
         }
 
-        private fun bindRelationship(a: Anniversary, emoji: String) {
-            tvName.text = "$emoji  ${a.name}"
+        private fun bindRelationship(a: Anniversary) {
+            tvName.text = a.name
             tvDate.text = "始于 ${a.date}"
+            ivIcon.setImageResource(R.drawable.ic_heart)
 
             // 最近的下一个里程碑
             val milestones = a.relationshipDays.split(",")
@@ -180,7 +178,7 @@ class AnniversaryAdapter : RecyclerView.Adapter<AnniversaryAdapter.VH>() {
                 val days = HomeFragment.daysUntil(nextMilestone.second)
                 updateCountdown(days)
                 tvMilestones.visibility = View.VISIBLE
-                tvMilestones.text = "⏳ ${nextMilestone.first}天纪念日 · ${nextMilestone.second}"
+                tvMilestones.text = "${nextMilestone.first}天纪念日 · ${nextMilestone.second}"
             } else {
                 // 没有未到来的里程碑，显示每年纪念日
                 val days = HomeFragment.daysUntil(a.date)

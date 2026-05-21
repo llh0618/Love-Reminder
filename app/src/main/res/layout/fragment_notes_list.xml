@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFF5F5">
+    android:background="?android:colorBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,33 +17,38 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="22sp"
-            android:textColor="#E8556D"
-            android:textStyle="bold" />
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
+            android:textColor="?attr/colorOnBackground" />
         <TextView
             android:id="@+id/btn_export"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="导出 MD"
-            android:textSize="14sp"
-            android:textColor="#FF6B81"
-            android:padding="8dp"
+            android:text="导出"
+            android:textAppearance="?attr/textAppearanceLabelLarge"
+            android:textColor="?attr/colorPrimary"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp"
             android:clickable="true"
-            android:background="@drawable/bg_btn_outline" />
+            android:background="@drawable/bg_btn_outline"
+            android:layout_marginEnd="8dp" />
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="添加"
             android:src="@drawable/ic_add"
-            app:backgroundTint="#FF6B81"
             app:fabSize="mini"
-            android:layout_marginStart="8dp" />
+            app:fabCustomSize="40dp"
+            app:backgroundTint="?attr/colorPrimaryContainer"
+            app:tint="?attr/colorOnPrimaryContainer"
+            app:elevation="0dp" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_notes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp" />
+        android:paddingHorizontal="12dp"
+        android:paddingBottom="8dp"
+        android:clipToPadding="false" />
 </LinearLayout>

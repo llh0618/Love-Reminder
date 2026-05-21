@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFF5F5">
+    android:background="?android:colorBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,18 +16,18 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="🎁 礼物清单"
-            android:textSize="22sp"
-            android:textColor="#E8556D"
-            android:textStyle="bold" />
+            android:text="礼物清单"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
+            android:textColor="?attr/colorOnBackground" />
         <TextView
             android:id="@+id/btn_export_gifts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="导出 MD"
-            android:textSize="14sp"
-            android:textColor="#FF6B81"
-            android:padding="8dp"
+            android:text="导出"
+            android:textAppearance="?attr/textAppearanceLabelLarge"
+            android:textColor="?attr/colorPrimary"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp"
             android:clickable="true"
             android:background="@drawable/bg_btn_outline"
             android:layout_marginEnd="8dp" />
@@ -37,17 +37,21 @@
             android:layout_height="wrap_content"
             android:contentDescription="添加礼物"
             android:src="@drawable/ic_add"
-            app:backgroundTint="#FF6B81"
-            app:fabSize="mini" />
+            app:fabSize="mini"
+            app:fabCustomSize="40dp"
+            app:backgroundTint="?attr/colorPrimaryContainer"
+            app:tint="?attr/colorOnPrimaryContainer"
+            app:elevation="0dp" />
     </LinearLayout>
 
-    <LinearLayout
+    <com.google.android.material.chip.ChipGroup
         android:id="@+id/filter_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="8dp"
+        app:singleSelection="true"
+        app:selectionRequired="true">
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_all"
             android:layout_width="wrap_content"
@@ -67,11 +71,13 @@
             android:layout_height="wrap_content"
             android:text="已送"
             style="@style/Widget.Material3.Chip.Filter" />
-    </LinearLayout>
+    </com.google.android.material.chip.ChipGroup>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_gifts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp" />
+        android:paddingHorizontal="12dp"
+        android:paddingBottom="8dp"
+        android:clipToPadding="false" />
 </LinearLayout>
