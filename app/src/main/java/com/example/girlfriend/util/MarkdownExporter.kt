@@ -9,42 +9,77 @@ import java.io.File
 
 object MarkdownExporter {
 
-    fun exportAndShare(context: Context) {
-        val md = runBlocking {
-            val notes = AppDatabase.getInstance(context).noteDao().getAll()
-            buildMarkdown(notes)
-        }
-        val file = File(context.cacheDir, "她的喜好手册.md")
-        file.writeText(md, Charsets.UTF_8)
-
+    private fun shareFile(context: Context, file: File, title: String) {
         val uri = FileProvider.getUriForFile(
-            context,
-            "${context.packageName}.fileprovider",
-            file
+            context, "${context.packageName}.fileprovider", file
         )
-
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
             type = "text/markdown"
             putExtra(Intent.EXTRA_STREAM, uri)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
-
-        context.startActivity(Intent.createChooser(shareIntent, "导出喜好手册"))
+        context.startActivity(Intent.createChooser(shareIntent, title))
     }
 
-    private fun buildMarkdown(notes: List<com.example.girlfriend.data.entity.Note>): String {
+    fun exportNotes(context: Context) {
+        val md = runBlocking {
+            val notes = AppDatabase.getInstance(context).noteDao().getAll()
+            buildNotesMarkdown(notes)
+        }
+        val file = File(context.cacheDir, "她的喜好手册.md")
+        file.writeText(md, Charsets.UTF_8)
+        shareFile(context, file, "导出喜好手册")
+    }
+
+    fun exportGifts(context: Context) {
+        val md = runBlocking {
+            val gifts = AppDatabase.getInstance(context).giftDao().getAllList()
+            buildGiftsMarkdown(gifts)
+        }
+        val file = File(context.cacheDir, "礼物清单.md")
+        file.writeText(md, Charsets.UTF_8)
+        shareFile(context, file, "导出礼物清单")
+    }
+
+    private fun buildGiftsMarkdown(gifts: List<com.example.girlfriend.data.entity.Gift>): String {
+        val want = gifts.filter { it.status == "want" }
+        val bought = gifts.filter { it.status == "bought" }
+
+        return buildString {
+            appendLine("# 🎁 礼物清单")
+            appendLine()
+            appendLine("## 想送")
+            appendLine()
+            if (want.isEmpty()) {
+                appendLine("_暂无_")
+            } else {
+                for (g in want) {
+                    append("- **${g.name}**")
+                    if (g.link.isNotBlank()) append("  [🔗](${g.link})")
+                    if (g.note.isNotBlank()) append(" — ${g.note}")
+                    appendLine()
+                }
+            }
+            appendLine()
+            appendLine("## 已送")
+            appendLine()
+            if (bought.isEmpty()) {
+                appendLine("_暂无_")
+            } else {
+                for (g in bought) {
+                    append("- ~~${g.name}~~")
+                    if (g.note.isNotBlank()) append(" — ${g.note}")
+                    appendLine()
+                }
+            }
+            appendLine()
+            appendLine("> 由「恋爱提醒」App 生成")
+        }
+    }
+
+    private fun buildNotesMarkdown(notes: List<com.example.girlfriend.data.entity.Note>): String {
         val likes = notes.filter { it.category == "like" }
         val dislikes = notes.filter { it.category == "dislike" }
-
-        // 按 tags 分组
-        val tagGroups = linkedMapOf(
-            "美食" to mutableListOf<String>(),
-            "饮品" to mutableListOf<String>(),
-            "颜色" to mutableListOf<String>(),
-            "品牌" to mutableListOf<String>(),
-            "爱好" to mutableListOf<String>(),
-            "其他" to mutableListOf<String>()
-        )
 
         fun groupNotes(list: List<com.example.girlfriend.data.entity.Note>): Map<String, List<String>> {
             val grouped = mutableMapOf<String, MutableList<String>>()
@@ -65,9 +100,7 @@ object MarkdownExporter {
             appendLine()
             for ((tag, items) in likeGrouped) {
                 appendLine("### $tag")
-                for (item in items) {
-                    appendLine("- $item")
-                }
+                for (item in items) appendLine("- $item")
                 appendLine()
             }
             if (likes.isEmpty()) appendLine("_还没记录_")
@@ -77,15 +110,13 @@ object MarkdownExporter {
             appendLine()
             for ((tag, items) in dislikeGrouped) {
                 appendLine("### $tag")
-                for (item in items) {
-                    appendLine("- $item")
-                }
+                for (item in items) appendLine("- $item")
                 appendLine()
             }
             if (dislikes.isEmpty()) appendLine("_还没记录_")
             appendLine()
 
-            appendLine("> 由「女友助手」App 生成")
+            appendLine("> 由「恋爱提醒」App 生成")
         }
     }
 }

@@ -44,7 +44,7 @@ abstract class NoteListFragment : Fragment() {
         }
 
         view.findViewById<View>(R.id.btn_export).setOnClickListener {
-            MarkdownExporter.exportAndShare(requireContext())
+            MarkdownExporter.exportNotes(requireContext())
         }
 
         adapter.onItemClick = { note -> openEditFragment(note) }

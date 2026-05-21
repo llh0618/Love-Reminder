@@ -14,6 +14,9 @@ interface GiftDao {
     @Query("SELECT * FROM gifts ORDER BY createdAt DESC")
     fun getAll(): LiveData<List<Gift>>
 
+    @Query("SELECT * FROM gifts ORDER BY createdAt DESC")
+    suspend fun getAllList(): List<Gift>
+
     @Query("SELECT * FROM gifts WHERE status = :status ORDER BY createdAt DESC")
     fun getByStatus(status: String): LiveData<List<Gift>>
 

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.girlfriend.MainActivity
 import com.example.girlfriend.R
 import com.example.girlfriend.data.entity.Gift
+import com.example.girlfriend.util.MarkdownExporter
 import com.google.android.material.chip.Chip
 
 class GiftsFragment : Fragment() {
@@ -45,14 +46,17 @@ class GiftsFragment : Fragment() {
             openEditFragment(null)
         }
 
+        view.findViewById<View>(R.id.btn_export_gifts).setOnClickListener {
+            MarkdownExporter.exportGifts(requireContext())
+        }
+
         adapter.onItemClick = { gift -> openEditFragment(gift) }
 
         // 状态筛选
         val filterChips = mapOf(
             R.id.chip_all to "all",
             R.id.chip_want to "want",
-            R.id.chip_bought to "bought",
-            R.id.chip_given to "given"
+            R.id.chip_bought to "bought"
         )
         filterChips.forEach { (id, status) ->
             view.findViewById<Chip>(id).setOnClickListener {
@@ -112,15 +116,13 @@ class GiftAdapter : RecyclerView.Adapter<GiftAdapter.VH>() {
             tvName.text = g.name
             tvNote.text = if (g.note.isNotBlank()) g.note else if (g.link.isNotBlank()) "🔗 $g.link" else ""
             tvStatus.text = when (g.status) {
-                "want" -> "想买"
-                "bought" -> "已买"
-                "given" -> "已送"
+                "want" -> "想送"
+                "bought" -> "已送"
                 else -> ""
             }
             tvStatus.setTextColor(when (g.status) {
                 "want" -> 0xFFFF9800.toInt()
-                "bought" -> 0xFF2196F3.toInt()
-                "given" -> 0xFF4CAF50.toInt()
+                "bought" -> 0xFF4CAF50.toInt()
                 else -> 0xFF999999.toInt()
             })
 

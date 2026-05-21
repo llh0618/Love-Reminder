@@ -36,7 +36,6 @@ class GiftEditFragment : Fragment() {
             selectedStatus = args.getString("status") ?: "want"
             when (selectedStatus) {
                 "bought" -> view.findViewById<android.widget.RadioButton>(R.id.rb_bought).isChecked = true
-                "given" -> view.findViewById<android.widget.RadioButton>(R.id.rb_given).isChecked = true
             }
             view.findViewById<View>(R.id.btn_delete).visibility = View.VISIBLE
         }
@@ -44,7 +43,6 @@ class GiftEditFragment : Fragment() {
         view.findViewById<android.widget.RadioGroup>(R.id.rg_status).setOnCheckedChangeListener { _, id ->
             selectedStatus = when (id) {
                 R.id.rb_bought -> "bought"
-                R.id.rb_given -> "given"
                 else -> "want"
             }
         }

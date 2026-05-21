@@ -81,15 +81,10 @@
             android:id="@+id/rb_want"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="想买"
+            android:text="想送"
             android:checked="true" />
         <RadioButton
             android:id="@+id/rb_bought"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="已买" />
-        <RadioButton
-            android:id="@+id/rb_given"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="已送" />
